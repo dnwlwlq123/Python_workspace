@@ -24,8 +24,6 @@ def my_min(lst, cmp=lambda x, y: x):
 min_list = [10,5,9,4,2,3,4,5,6,7,4,2,2,3,4,1,6]
 print('최솟값 : ', my_min(min_list, cmp=lambda x, y: x if x < y else y))
 
-
-
 # --------------------------------------------
 # 2. sort 구현하기 
 # 
