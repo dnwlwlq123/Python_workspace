@@ -1,4 +1,5 @@
-import random 
+import os.path
+import random
 
 # --------------------------------------------
 # 1. max / min 구현하기 
@@ -33,42 +34,109 @@ print('최솟값 : ', my_min(min_list, cmp=lambda x, y: x if x < y else y))
 # 4) 주어진 기준 cmp가 큰 element를 출력하거나, 같다는 결과를 출력하게 만들기 
 # 5) cmp상 같은 경우 tie-breaking하는 함수 넣기 
 # --------------------------------------------
-
+print()
+print('**************************************************************')
+print()
 def sort1(lst):
-    lst.sort()
+
+    n = len(lst)
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if lst[j] > lst[j + 1]:
+                lst[j], lst[j + 1] = lst[j + 1], lst[j]
     return lst
-sort_lst = [2,7,4,1,5,6,8,2,3,5,4]
-print(sort1(sort_lst))
-
-def sort2(lst, upper_to_lower = True):
-
-    asce = sorted(lst)
-    desc = sorted(lst, reverse=True)
-    print(f'오름차순: {asce}')
-    print(f'내림차순: {desc}')
-sort_lst = [2,7,4,1,5,6,8,2,3,5,4]
-sort2(sort_lst)
+sort_lst = [2, 7, 4, 1, 5, 6, 8, 2, 3, 5, 4]
+print(f'오름차순: {sort1(sort_lst)}')
 
 
+print()
+print('**************************************************************')
+print()
+def sort2(lst, upper_to_lower=True):
+    n = len(lst)
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if upper_to_lower:
+                if lst[j] > lst[j + 1]:
+                    lst[j], lst[j + 1] = lst[j + 1], lst[j]
+            else:
+                if lst[j] < lst[j + 1]:
+                    lst[j], lst[j + 1] = lst[j + 1], lst[j]
+    return lst
+
+sort_lst = [2, 7, 4, 1, 5, 6, 8, 2, 3, 5, 4]
+print(f'오름차순: {sort2(sort_lst, upper_to_lower=True)}')
+print()
+print(f'내림차순: {sort2(sort_lst, upper_to_lower=False)}')
+
+
+print()
+print('**************************************************************')
+print()
 def sort3(lst, upper_to_lower=True, cmp=lambda x, y: x):
     n = len(lst)
     for i in range(n):
         for j in range(0, n - i - 1):
-            if cmp(lst[j], lst[j + 1]) == lst[j + 1]:
-                lst[j], lst[j + 1] = lst[j + 1], lst[j]
+            if upper_to_lower:
+                if cmp(lst[j + 1], lst[j]):
+                    lst[j], lst[j + 1] = lst[j + 1], lst[j]
+    return lst
 
-    print(f'결과: {lst}')
+sort_lst = [2, 7, 4, 1, 5, 6, 8, 2, 3, 5, 4]
+print(f'오름차순: {sort3(sort_lst, upper_to_lower=True, cmp=lambda x, y: x < y)}')
+print()
+print(f'내림차순: {sort3(sort_lst, upper_to_lower=True, cmp=lambda x, y: x > y)}')
 
-sort_lst = [5, 3, 3, 7, 8, 4, 6, 5, 0, 9, 1]
-sort3(sort_lst)
 
 
 def sort4(lst, upper_to_lower = True, cmp = lambda x, y: x):
-    pass 
+    ...
+
+print()
+print('**************************************************************')
+print()
 
 
-# def sort5(lst, upper_to_lower = True, cmp = lambda x, y: x, tie_breaker = lambda x, y: random.choice([x,y]):
-#     pass
+import random
+
+def sort5(lst, upper_to_lower=True, cmp=lambda x, y: x, tie_breaker=lambda x, y: random.choice([x, y])):
+    n = len(lst)
+
+    def demo_sort5(x, y):
+        if cmp(x, y):
+            return True
+        elif cmp(y, x):
+            return False
+        else:
+            return tie_breaker(x, y) == x
+
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if upper_to_lower:
+                if demo_sort5(lst[j], lst[j + 1]):
+                    lst[j], lst[j + 1] = lst[j + 1], lst[j]
+            else:
+                if demo_sort5(lst[j + 1], lst[j]):
+                    lst[j], lst[j + 1] = lst[j + 1], lst[j]
+
+    return lst
+sort_lst = [(1, 4), (1, 5), (1, 2), (40, 24), (3, 1), (5, 4), (1, 3),(3,3)]
+sort_lst_desc = sort5(
+    sort_lst.copy(),
+    upper_to_lower=True,
+    cmp=lambda x, y: (x[0] > y[0]) or (x[0] == y[0] and x[1] > y[1]),
+    tie_breaker=lambda x, y: random.choice([x, y])
+)
+print(f'내림차순: {sort_lst_desc}')
+sort_lst_asc = sort5(
+    sort_lst.copy(),
+    upper_to_lower=True,
+    cmp=lambda x, y: (x[0] < y[0]) or (x[0] == y[0] and x[1] < y[1]),
+    tie_breaker=lambda x, y: random.choice([x, y])
+)
+print(f'오름차순: {sort_lst_asc}')
+
+
 
 
 
@@ -105,6 +173,5 @@ def cache_to_txt(function):
     pass 
 
 def cache_to_pickle(function):
-    pass 
-
+    ...
 

@@ -8,8 +8,6 @@ import math
 # --------------------------------------------
 
 def pi():
-    """원주율을 소숫점 두 자리까지 반환하는 함수
-    """
     return  round(math.pi, 2)
 print(pi())
 def left_append(lst, elem):
